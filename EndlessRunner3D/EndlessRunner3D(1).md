@@ -1,4 +1,4 @@
-[EndlessRunner3D(1).md](https://github.com/user-attachments/files/32736907/EndlessRunner3D.1.md)
+[Uploading EndlessRunner3D(1).md…]()
 # PlayerMovement
 ```
 using UnityEngine;
@@ -123,3 +123,20 @@ ex) 중앙 라인 (current==1): (1-1) × 3.0f = 0 --> X축 좌표
 
 ---
 ### ``` transform.position = newPosition;```
+계산이 완료된 **newPosition(좌우 이동 + 전진 이동이 모두 반영된 위치)**을
+플레이어(오브젝트)의 **실제 위치(transform.position)**에 할당
+
+---
+메서드인 **void ChangeLane**에 대해 알아보자
+# Void ChangeLane(int direction)
+
+### ```currentLane = Mathf.Clamp(currentLane+direction, 0, 2);```
+**currentLane**: 플레이어 오브젝트가 가지는 줄 번호 (0, 1, 2)
+
+**int direction**: 매개 변수이고, Update() 내에서 받는 ChangeLane(int direction)에서 받아옴 (-1, 1 같은 값)
+
+**currentLane + direction**: 말 그대로 '줄 번호(인덱스 값)에 아끼 ChangeLane으로 받았던 값(-1, 1) 더하기'
+
+**Mathf.Clamp(value, min, max)** 가 뭔데?
+* 특정 값(value)가 지정한 최소값(min)과 최대값(max) 범위를 벗어나지 않도록 강제로 가뒤두는 함수 *(= 값을 제한하는 유니티 수학 함수)*
+* 여기서의 최소값은 **0**(가장 왼쪽 라인), 최대값은 **1**(가장 오른쪽 라인)
