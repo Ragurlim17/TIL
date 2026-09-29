@@ -1,4 +1,4 @@
-[Uploading EndlessRunner3D(1).md…]()
+[EndlessRunner3D(1).md](https://github.com/user-attachments/files/32800061/EndlessRunner3D.1.md)
 # PlayerMovement
 ```
 using UnityEngine;
@@ -140,3 +140,52 @@ ex) 중앙 라인 (current==1): (1-1) × 3.0f = 0 --> X축 좌표
 **Mathf.Clamp(value, min, max)** 가 뭔데?
 * 특정 값(value)가 지정한 최소값(min)과 최대값(max) 범위를 벗어나지 않도록 강제로 가뒤두는 함수 *(= 값을 제한하는 유니티 수학 함수)*
 * 여기서의 최소값은 **0**(가장 왼쪽 라인), 최대값은 **1**(가장 오른쪽 라인)
+
+**Mathf. 의 다양한 활용**
+* **Mathf.Clamp(values, min, max)** : 최소 ~ 최대 범위로 값을 계산
+* **Mathf.Lerp(a, b, t)** : 두 숫자(a,b) 사이를 부드럽게 연결 (전에 사용했던 *Vector3.Lerp* 와 원리 같음!!)
+* **Mathf.Max(a,b)** : 두 숫자들(a,b)중 더 큰 값을 반환
+* **Mathf.Min(a,b)** : 두 숫자들(a,b)중 더 작은 값을 반환
+* **Mathf.Abs(value)** : 절댓값 구하기 *(-5 -> 5)*
+* **Mathf.Floor(value)** : 소수점 버림 *(3.4f -> 3.0f)*
+* **Mathf.Ceil(value)** : 소수점 올림 *(3.4f -> 4.0f)*
+* **Mathf.Round(value)** : 반올림 *(3.1f -> 3.0f / 3.5f -> 4.0f)*
+
+**Mathf. 게임 제작용 특수 기능**
+* **Mathf.Repeat(t, length)** : 값을 0 ~ length 범위에서 *무한 반복*
+* **Mathf. PingPong(t, length)** : 값이 0 ~ length 사이에서 *왔다갔다* 하게 만듦
+* **Mathf.Sqrt(value)** : 제곱근(루트) 계산
+* **Mathf.Sin , Mathf.Cos** : 삼각함수
+
+---
+### ```private void OnTriggerEnter(Collider other)```
+
+**OnTriggerEnter**가 뭔데?
+* 유니티 내의 특수 이벤트 메서드
+* 개발자가 직접 호출 X, *물체끼리 **'스치거나 겹치는 순간'** 유니티가 알아서 **1회** 자동으로 실행*
+
+어떻게 쓸까?
+* 상호작용하게 되는 물체 중 한 개 이상은 **Is Trigger**에 체크를 해야 함
+* 상호작용하게 되는 물체 전부 **Collider**을 가지고 있어야 함
+* 상호작용하게 되는 물체 중 한 개 이상은 **RigidBody**를 가지고 있어야 함
+
+이렇게 하면 **Is Trigger**가 켜져있는 오브젝트는 다른 오브젝트와 *물리적인* (부딪치기 이런거) 작용이 불가해지고, 단지 자신의 오브젝트 범위에 다른 물체가 들어왔는지만 체크하는 용도로 변하게 됨.
+
+진짜 그저 **유령 블록** 느낌?
+
+**Collider other**이 뭔데?
+* 매개 변수(Parameter)
+* *Collider* : 유니티 내에서 물체의 *형체(충돌 범위)* 를 나타내는 *컴포넌트 타입*
+* *other* : 내 오브젝트(캐릭터, 플레이어)와 *방금 부딪힌 **상대 물체의 Collider** 정보가 들어오는 곳*
+
+---
+### ```if (other.CompareTag("Obstacle")) {Debug.Log("Crush Obstacle!"); fowardSpeed = 0f;}```
+**other.CompareTag(*Tag_name*)** : other에서 받은 태그 이름이 *Tag_name* 과 같은지 확인 (True, False)
+
+**Debug.Log(*Text*)** : 개발자 콘솔창에 *Text* 표시
+
+여기서 **fowardSpeed = 0f;** 가 뭐하는데?
+
+위에 있는 **Update()** 문에 있었던
+
+**newPosition.z += fowardSpeed * Time.deltaTime**을 멈추게 만듦 *(0f)*
